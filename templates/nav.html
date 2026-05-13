@@ -1,0 +1,17 @@
+<header>
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Rincón del Vago">
+        <h1>Rincón del Vago</h1>
+    </div>
+    <nav>
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('gestionar_usuarios') }}">Usuarios</a>
+        <a href="{{ url_for('gestionar_categorias') }}">Categorías</a>
+        <a href="{{ url_for('gestionar_autores') }}">Autores</a>
+        <a href="{{ url_for('gestionar_libros') }}">Libros</a>
+        <a href="{{ url_for('gestionar_prestamos') }}">Préstamos</a>
+        <a href="{{ url_for('buscar_libro') }}">Buscar</a>
+        <a href="{{ url_for('ver_estadisticas') }}">Estadísticas</a>
+    </nav>
+</header>
+

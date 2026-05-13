@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Libros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% include "nav.html" %}
+    
+    <div class="container">
+        <div class="card">
+            <h2>Búsqueda Avanzada de Libros</h2>
+            <form method="GET" action="{{ url_for('buscar_libro') }}">
+                <div class="form-group">
+                    <label>Título del Libro:</label>
+                    <input type="text" name="criterio" value="{{ criterio }}" placeholder="Ej: Harry Potter...">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Filtrar por Autor:</label>
+                        <select name="autor_id">
+                            <option value="">-- Todos los Autores --</option>
+                            {% for autor in autores %}
+                            <option value="{{ autor.id }}" {% if autor_id == autor.id|string %}selected{% endif %}>{{ autor.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Filtrar por Categoría:</label>
+                        <select name="categoria_id">
+                            <option value="">-- Todas las Categorías --</option>
+                            {% for cat in categorias %}
+                            <option value="{{ cat.id }}" {% if categoria_id == cat.id|string %}selected{% endif %}>{{ cat.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit">Ejecutar Búsqueda</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h2>Resultados de Búsqueda</h2>
+            {% if criterio or autor_id or categoria_id %}
+                {% if libros %}
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Categoría</th>
+                                    <th>Autor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for libro in libros %}
+                                <tr>
+                                    <td><strong>{{ libro.titulo }}</strong></td>
+                                    <td>{{ libro.categoria.nombre if libro.categoria else 'N/A' }}</td>
+                                    <td>{{ libro.autor.nombre if libro.autor else 'Desconocido' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div style="text-align: center; padding: 30px; color: #666;">
+                        <p>No se encontraron libros que coincidan con los filtros aplicados.</p>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div style="text-align: center; padding: 30px; color: #666;">
+                    <p>Ingresa un término de búsqueda o selecciona un filtro para ver los resultados.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
+

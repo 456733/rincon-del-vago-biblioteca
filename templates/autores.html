@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Autores</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% include "nav.html" %}
+    
+    <div class="container">
+        <div class="card">
+            <h2>Registrar Nuevo Autor</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Nombre del Autor:</label>
+                    <input type="text" name="nombre" placeholder="Ej: Gabriel García Márquez" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nacionalidad:</label>
+                    <input type="text" name="nacionalidad" placeholder="Ej: Colombiana">
+                </div>
+                
+                <button type="submit">Guardar Autor</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h2>Lista de Autores Registrados</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Nacionalidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for autor in autores %}
+                        <tr>
+                            <td>{{ autor.id }}</td>
+                            <td><strong>{{ autor.nombre }}</strong></td>
+                            <td>{{ autor.nacionalidad }}</td>
+                            <td>
+                                <a href="{{ url_for('editar_autor', id_autor=autor.id) }}" style="color: var(--primary); text-decoration: none; font-weight: 600;">Editar</a>
+                                <form action="{{ url_for('eliminar_autor', id_autor=autor.id) }}" method="POST" class="inline-form" style="display:inline; margin-left: 10px;">
+                                    <button type="submit" class="btn-red" style="padding: 5px 10px; font-size: 0.8rem;">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No hay autores registrados aún.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

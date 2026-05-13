@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Préstamos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% include "nav.html" %}
+    
+    <div class="container">
+        <div class="card">
+            <h2>Registrar Nuevo Préstamo</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Libro a Prestar:</label>
+                    <select name="libro_id" required>
+                        <option value="">-- Selecciona un Libro --</option>
+                        {% for libro in libros %}
+                        <option value="{{ libro.id }}">{{ libro.titulo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Usuario que solicita el préstamo:</label>
+                    <select name="usuario_id" required>
+                        <option value="">-- Selecciona un Usuario --</option>
+                        {% for usuario in usuarios %}
+                        <option value="{{ usuario.id }}">{{ usuario.nombre }} ({{ usuario.email }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Fecha de Préstamo (Inicio):</label>
+                        <input type="date" name="fecha_prestamo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Fecha Límite de Devolución:</label>
+                        <input type="date" name="fecha_devolucion" required>
+                    </div>
+                </div>
+                
+                <button type="submit">Registrar Préstamo</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h2>Registro de Préstamos</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Libro</th>
+                            <th>Usuario</th>
+                            <th>Inicio</th>
+                            <th>Límite</th>
+                            <th>Estado / Entrega</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in prestamos %}
+                        <tr>
+                            <td>{{ p.id }}</td>
+                            <td><strong>{{ p.libro.titulo if p.libro else 'Desconocido' }}</strong></td>
+                            <td>{{ p.usuario.nombre if p.usuario else 'Desconocido' }}</td>
+                            <td>{{ p.fecha_prestamo }}</td>
+                            <td>{{ p.fecha_devolucion }}</td>
+                            <td>
+                                {% if p.fecha_entrega %}
+                                    <span style="color: #27ae60; font-weight: 600;">Devuelto ({{ p.fecha_entrega }})</span>
+                                {% else %}
+                                    <span style="color: #e67e22; font-weight: 600;">En préstamo</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not p.fecha_entrega %}
+                                <form action="{{ url_for('devolver_prestamo', id_prestamo=p.id) }}" method="POST" class="inline-form">
+                                    <button type="submit" class="btn-orange" style="padding: 5px 10px; font-size: 0.8rem;">Marcar Devuelto</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align: center;">No hay préstamos registrados aún.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

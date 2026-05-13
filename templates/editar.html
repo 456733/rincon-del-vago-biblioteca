@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% include "nav.html" %}
+    <hr>
+    
+    <h2>Editar {{ tipo }}</h2>
+    <form method="POST">
+        {% if tipo == 'Usuario' %}
+            <label>Nombre:</label><br>
+            <input type="text" name="nombre" value="{{ obj.nombre }}" required><br>
+            <label>Email:</label><br>
+            <input type="email" name="email" value="{{ obj.email }}"><br>
+            <label>Teléfono:</label><br>
+            <input type="text" name="telefono" value="{{ obj.telefono }}"><br>
+            
+        {% elif tipo == 'Autor' %}
+            <label>Nombre:</label><br>
+            <input type="text" name="nombre" value="{{ obj.nombre }}" required><br>
+            <label>Nacionalidad:</label><br>
+            <input type="text" name="nacionalidad" value="{{ obj.nacionalidad }}"><br>
+            
+        {% elif tipo == 'Libro' %}
+            <label>Título:</label><br>
+            <input type="text" name="titulo" value="{{ obj.titulo }}" required><br>
+            <label>Categoría:</label><br>
+            <select name="categoria_id" required>
+                {% for cat in categorias %}
+                <option value="{{ cat.id }}" {% if cat.id == obj.categoria_id %}selected{% endif %}>{{ cat.nombre }}</option>
+                {% endfor %}
+            </select><br>
+            <label>Fecha de Publicación:</label><br>
+            <input type="date" name="fecha_publicacion" value="{{ obj.fecha_publicacion }}"><br>
+            <label>Autor:</label><br>
+            <select name="autor_id" required>
+                {% for autor in autores %}
+                <option value="{{ autor.id }}" {% if autor.id == obj.autor_id %}selected{% endif %}>{{ autor.nombre }}</option>
+                {% endfor %}
+            </select><br>
+        {% endif %}
+        
+        <br>
+        <button type="submit">Actualizar Cambios</button>
+    </form>
+    
+</body>
+</html>
+

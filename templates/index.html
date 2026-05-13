@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Biblioteca - Demo ORM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    {% include "nav.html" %}
+
+    <div class="container">
+        <section class="hero">
+            <h1>Bienvenido a Rincón del Vago</h1>
+            <p>sistema de gestion de biblioteca </p>
+        </section>
+
+        <div class="features">
+            <div class="feature-card">
+                <h2>Gestión de Libros</h2>
+                <p>Organiza tu colección .</p>
+            </div>
+            <div class="feature-card">
+                <h2>Control de Préstamos</h2>
+                <p>Seguimiento detallado de cada ejemplar, fechas límite y estados de entrega.</p>
+            </div>
+            <div class="feature-card">
+                <h2>Estadísticas Reales</h2>
+                <p>Visualiza el rendimiento de la biblioteca.</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

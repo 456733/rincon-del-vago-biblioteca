@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas y Consultas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    {% include "nav.html" %}
+
+    <div class="container">
+        <div class="card" style="text-align: center; background: linear-gradient(135deg, #ffffff 0%, #f1f2f6 100%);">
+            <h2 style="border-bottom: none;"> Autor Destacado</h2>
+            <div style="margin-top: 20px;">
+                {% if autor_top %}
+                <div style="font-size: 1.2rem; color: var(--primary);">El autor con más obras en nuestro catálogo es:
+                </div>
+                <div style="font-size: 2.5rem; font-weight: 600; color: var(--primary-dark); margin: 10px 0;">{{
+                    autor_top[0] }}</div>
+                <div
+                    style="font-size: 1.1rem; background: var(--secondary); display: inline-block; padding: 5px 20px; border-radius: 20px; font-weight: 600;">
+                    {{ autor_top[1] }} Libros Registrados
+                </div>
+                {% else %}
+                <p style="color: #666;">Aún no tenemos suficientes datos para calcular el autor top.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="color: #e74c3c; border-color: #e74c3c;"> Préstamos Vencidos</h2>
+            <p style="margin-bottom: 20px; color: #666;">Listado de libros cuya fecha límite de devolución ya expiró y
+                aún permanecen fuera de la biblioteca.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Libro</th>
+                            <th>Fecha Límite</th>
+                            <th>Retraso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in prestamos_vencidos %}
+                        <tr style="background-color: rgba(231, 76, 60, 0.05);">
+                            <td><strong>{{ p.usuario.nombre }}</strong></td>
+                            <td>{{ p.libro.titulo }}</td>
+                            <td>{{ p.fecha_devolucion }}</td>
+                            <td style="color: #e74c3c; font-weight: 600;">
+                                <span
+                                    style="background: #e74c3c; color: white; padding: 2px 10px; border-radius: 10px;">
+                                    {{ p.dias_retraso }} días de mora
+                                </span>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 40px; color: #27ae60;">
+                                <div style="font-size: 3rem; margin-bottom: 10px;">✅</div>
+                                <strong>¡Excelente gestión!</strong> No hay préstamos vencidos en este momento.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
